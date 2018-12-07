@@ -1,3 +1,3 @@
 # socialnet
 
-Clone, run npm install, npm run start, configure .env file and go to localhost:3000/swagger
+Clone, run npm install, npm run start, configure .env file and go to localhost:3000/swagger (SWAGGER DEFINITION IS NOT FULLY COMPLETED)
