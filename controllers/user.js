@@ -1,5 +1,6 @@
 const _ = require('lodash');
 const User = require('../models/user');
+const { createJwt } = require('./auth');
 
 /**
  * Create User
@@ -13,7 +14,10 @@ const createUser = async (req, res) => {
     user.password = user.generateHash(user.password);
     const result = await user.save();
 
-    return res.status(201).send(result.nickname);
+    const token = createJwt(result.nickname);
+    res.set('x-access-token', token);
+
+    return res.status(200).send({ auth: true });
   } catch (err) {
     return res.status(500).send(err);
   }
@@ -99,11 +103,13 @@ const login = async (req, res) => {
     const body = _.get(req, 'body', null);
     if (!body) return res.status(500).send({ error: 'Incorrect data' });
 
-    const result = await User.find(body.nickname);
+    const result = await User.findOne({ nickname: body.nickname });
     if (!result) return res.status(404).send({ error: 'Cannot GET user' });
-    if (!result.validPassword(body.password)) return res.status(500).send({ error: 'Incorrect password' });
+    if (!result.validPassword(body.password, result.password)) return res.status(401).send({ error: 'Incorrect password' });
 
-    return res.send(result);
+    const token = createJwt(body.nickname);
+    res.set('x-access-token', token);
+    return res.status(200).send({ auth: true });
   } catch (err) {
     return res.status(404).send({ error: 'Cannot GET user' });
   }

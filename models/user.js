@@ -11,8 +11,8 @@ const user = new Schema({
   following: [{ type: String }],
 });
 
-user.methods.generateHash = password => bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
+user.methods.generateHash = pass => bcrypt.hashSync(pass, bcrypt.genSaltSync(8), null);
 
-user.methods.validPassword = password => bcrypt.compareSync(password, this.password);
+user.methods.validPassword = (pass, hash) => ((pass) ? bcrypt.compareSync(pass, hash) : false);
 
 module.exports = mongoose.model('User', user);

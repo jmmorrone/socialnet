@@ -9,6 +9,9 @@ const createPhoto = async (req, res) => {
     const body = _.get(req, 'body', null);
     if (!body) return res.status(500).send({ error: 'Cannot POST photo' });
 
+    body.author = _.get(req, 'userId', null);
+    if (!body.author) return res.status(500).send({ error: 'Cannot POST user' });
+
     const photo = new Photo(body);
     const result = await photo.save();
 

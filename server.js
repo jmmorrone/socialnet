@@ -9,7 +9,6 @@ const swaggerDocument = require('./swagger.json');
 const logger = require('./logger');
 const userRoutes = require('./routes/user');
 const photoRoutes = require('./routes/photo');
-const session = require('./session');
 
 // App configuration
 const app = express();
@@ -17,7 +16,6 @@ const app = express();
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(session());
 
 // Swagger config
 if (CONFIG.app === 'dev') swaggerDocument.host = `localhost:${CONFIG.port}`;
