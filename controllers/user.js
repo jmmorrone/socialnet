@@ -91,10 +91,29 @@ const followUser = async (req, res) => {
   }
 };
 
+/**
+ * Login
+ */
+const login = async (req, res) => {
+  try {
+    const body = _.get(req, 'body', null);
+    if (!body) return res.status(500).send({ error: 'Incorrect data' });
+
+    const result = await User.find(body.nickname);
+    if (!result) return res.status(404).send({ error: 'Cannot GET user' });
+    if (!result.validPassword(body.password)) return res.status(500).send({ error: 'Incorrect password' });
+
+    return res.send(result);
+  } catch (err) {
+    return res.status(404).send({ error: 'Cannot GET user' });
+  }
+};
+
 module.exports = {
   createUser,
   getUser,
   updateUser,
   getAllUsers,
   followUser,
+  login,
 };

@@ -28,4 +28,9 @@ router.get('/users', user.getAllUsers);
  */
 router.patch('/users/:id/follow', user.followUser);
 
+/**
+ * Login
+ */
+router.post('/login', user.login);
+
 module.exports = router;

@@ -31,7 +31,6 @@ mongoose.connect(url, { useNewUrlParser: true }, (err) => {
 
 // Routes
 app.get('/', (req, res) => res.send('Welcome to Socialnet!'));
-app.post('/login', (req, res) => res.send('Logged!'));
 app.use(userRoutes);
 app.use(photoRoutes);
 app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
