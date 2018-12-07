@@ -48,7 +48,7 @@ const updateUser = async (req, res) => {
     const body = _.get(req, 'body', null);
     if (!id || !body) return res.status(500).send({ error: 'Cannot GET user' });
 
-    const result = await User.findOneAndUpdate(id, body);
+    const result = await User.findOneAndUpdate(id, body, { new: true });
     if (!result) return res.status(404).send({ error: 'Cannot UPDATE user' });
 
     return res.status(200).send(result);
@@ -86,7 +86,7 @@ const followUser = async (req, res) => {
 
     if (!followedUser) return res.status(404).send({ error: 'Cannot find user to be followed' });
 
-    const result = await User.findByIdAndUpdate(id, { $push: { following: followedUserId } });
+    const result = await User.findByIdAndUpdate(id, { $push: { following: followedUserId } }, { new: true });
     if (!result) return res.status(404).send({ error: 'Cannot FOLLOW user' });
 
     return res.status(200).send(result);

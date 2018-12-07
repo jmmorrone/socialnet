@@ -59,7 +59,7 @@ const likePhoto = async (req, res) => {
     const id = _.get(req, 'params.id', null);
     if (!id) return res.status(500).send({ error: 'Cannot GET photo' });
 
-    const result = await Photo.findByIdAndUpdate(id, { $inc: { likes: 1 } });
+    const result = await Photo.findByIdAndUpdate(id, { $inc: { likes: 1 } }, { new: true });
     if (!result) return res.status(404).send({ error: 'Cannot LIKE photo' });
 
     return res.status(200).send(result);
@@ -76,7 +76,7 @@ const commentPhoto = async (req, res) => {
     const id = _.get(req, 'params.id', null);
     if (!id) return res.status(500).send({ error: 'Cannot GET photo' });
 
-    const result = await Photo.findByIdAndUpdate(id, { $inc: { comments: 1 } });
+    const result = await Photo.findByIdAndUpdate(id, { $inc: { comments: 1 } }, { new: true });
     if (!result) return res.status(404).send({ error: 'Cannot COMMENT photo' });
 
     return res.status(200).send(result);
