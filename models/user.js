@@ -8,6 +8,7 @@ const user = new Schema({
   nickname: { type: String, required: true, index: { unique: true } },
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
+  following: [{ type: String }],
 });
 
 user.methods.generateHash = password => bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);

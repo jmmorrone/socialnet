@@ -90,7 +90,7 @@
         }
       },
       "patch": {
-        "summary": "Update user with give ID",
+        "summary": "Update user with given ID",
         "tags": [
           "User"
         ],
@@ -109,6 +109,166 @@
             "description": "User is updated",
             "schema": {
               "$ref": "#/definitions/User"
+            }
+          }
+        }
+      }
+    },
+    "/users/{userId}/follow": {
+      "parameters": [
+        {
+          "name": "userId",
+          "in": "path",
+          "required": true,
+          "description": "ID of user that we want to find",
+          "type": "string"
+        }
+      ],
+      "patch": {
+        "summary": "Update user with given ID",
+        "tags": [
+          "User"
+        ],
+        "parameters": [
+          {
+            "name": "user",
+            "in": "body",
+            "description": "User with new values or properties",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserID"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User is updated",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        }
+      }
+    },
+    "/photos": {
+      "post": {
+        "tags": [
+          "Photo"
+        ],
+        "description": "Create new photo in system",
+        "parameters": [
+          {
+            "name": "photo",
+            "in": "body",
+            "description": "Photo that we want to create",
+            "schema": {
+              "$ref": "#/definitions/Photo"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "New photo is created",
+            "schema": {
+              "$ref": "#/definitions/Photo"
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Photo"
+        ],
+        "summary": "Get all photos in system",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Photos"
+            }
+          }
+        }
+      }
+    },
+    "/photos/{photoId}": {
+      "parameters": [
+        {
+          "name": "photoId",
+          "in": "path",
+          "required": true,
+          "description": "ID of photo that we want to find",
+          "type": "string"
+        }
+      ],
+      "get": {
+        "tags": [
+          "Photo"
+        ],
+        "summary": "Get photo with given ID",
+        "responses": {
+          "200": {
+            "description": "Photo is found",
+            "schema": {
+              "$ref": "#/definitions/Photo"
+            }
+          }
+        }
+      }
+    },
+    "/photos/{photoId}/like": {
+      "parameters": [
+        {
+          "name": "photoId",
+          "in": "path",
+          "required": true,
+          "description": "ID of photo that we want to find",
+          "type": "string"
+        }
+      ],
+      "patch": {
+        "tags": [
+          "Photo"
+        ],
+        "description": "Like photo in system",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Photo is liked",
+            "schema": {
+              "$ref": "#/definitions/Photo"
+            }
+          }
+        }
+      }
+    },
+    "/photos/{photoId}/comment": {
+      "parameters": [
+        {
+          "name": "photoId",
+          "in": "path",
+          "required": true,
+          "description": "ID of photo that we want to find",
+          "type": "string"
+        }
+      ],
+      "patch": {
+        "tags": [
+          "Photo"
+        ],
+        "description": "Comment photo in system",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Photo is commented",
+            "schema": {
+              "$ref": "#/definitions/Photo"
             }
           }
         }
@@ -139,12 +299,61 @@
         },
         "lastName": {
           "type": "string"
+        },
+        "following": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         }
       }
     },
     "Users": {
       "type": "array",
       "$ref": "#/definitions/User"
+    },
+    "Photo": {
+      "required": [
+        "added",
+        "likes",
+        "comments",
+        "url",
+        "author"
+      ],
+      "properties": {
+        "added": {
+          "type": "string"
+        },
+        "likes": {
+          "type": "number"
+        },
+        "comments": {
+          "type": "number"
+        },
+        "url": {
+          "type": "string"
+        },
+        "author": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "Photos": {
+      "type": "array",
+      "$ref": "#/definitions/Photo"
+    },
+    "UserID": {
+      "required": [
+        "userId"
+      ],
+      "properties": {
+        "userId": {
+          "type": "string"
+        }
+      }
     }
   }
 }

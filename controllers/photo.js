@@ -35,24 +35,6 @@ const getPhoto = async (req, res) => {
 };
 
 /**
- * Update Photo
- */
-const updatePhoto = async (req, res) => {
-  try {
-    const id = _.get(req, 'params.id', null);
-    const body = _.get(req, 'body', null);
-    if (!id || !body) return res.status(500).send({ error: 'Cannot GET photo' });
-
-    const result = await Photo.findByIdAndUpdate(id, body);
-    if (!result) return res.status(404).send({ error: 'Cannot UPDATE photo' });
-
-    return res.status(200).send(result);
-  } catch (err) {
-    return res.status(500).send(err);
-  }
-};
-
-/**
  * All photos
  */
 const getAllPhotos = async (req, res) => {
@@ -66,9 +48,44 @@ const getAllPhotos = async (req, res) => {
   }
 };
 
+/**
+ * Like Photo
+ */
+const likePhoto = async (req, res) => {
+  try {
+    const id = _.get(req, 'params.id', null);
+    if (!id) return res.status(500).send({ error: 'Cannot GET photo' });
+
+    const result = await Photo.findByIdAndUpdate(id, { $inc: { likes: 1 } });
+    if (!result) return res.status(404).send({ error: 'Cannot LIKE photo' });
+
+    return res.status(200).send(result);
+  } catch (err) {
+    return res.status(500).send(err);
+  }
+};
+
+/**
+ * Comment Photo
+ */
+const commentPhoto = async (req, res) => {
+  try {
+    const id = _.get(req, 'params.id', null);
+    if (!id) return res.status(500).send({ error: 'Cannot GET photo' });
+
+    const result = await Photo.findByIdAndUpdate(id, { $inc: { comments: 1 } });
+    if (!result) return res.status(404).send({ error: 'Cannot COMMENT photo' });
+
+    return res.status(200).send(result);
+  } catch (err) {
+    return res.status(500).send(err);
+  }
+};
+
 module.exports = {
   createPhoto,
   getPhoto,
-  updatePhoto,
+  likePhoto,
+  commentPhoto,
   getAllPhotos,
 };

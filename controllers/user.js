@@ -67,9 +67,34 @@ const getAllUsers = async (req, res) => {
   }
 };
 
+/**
+ * Follow User
+ */
+const followUser = async (req, res) => {
+  try {
+    const id = _.get(req, 'params.id', null);
+    const body = _.get(req, 'body', null);
+    if (!id || !body) return res.status(500).send({ error: 'Cannot GET user' });
+
+    const followedUserId = _.get(body, 'userId', null);
+    if (id === followedUserId) return res.status(500).send({ error: 'Cannot follow yourself' });
+    const followedUser = await User.findById(followedUserId);
+
+    if (!followedUser) return res.status(404).send({ error: 'Cannot find user to be followed' });
+
+    const result = await User.findByIdAndUpdate(id, { $push: { following: followedUserId } });
+    if (!result) return res.status(404).send({ error: 'Cannot FOLLOW user' });
+
+    return res.status(200).send(result);
+  } catch (err) {
+    return res.status(500).send(err);
+  }
+};
+
 module.exports = {
   createUser,
   getUser,
   updateUser,
   getAllUsers,
+  followUser,
 };

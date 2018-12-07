@@ -14,13 +14,18 @@ router.post('/photos', photo.createPhoto);
 router.get('/photos/:id', photo.getPhoto);
 
 /**
- * Update Photo
- */
-router.patch('/photos/:id', photo.updatePhoto);
-
-/**
  * All photos
  */
 router.get('/photos', photo.getAllPhotos);
+
+/**
+ * Like Photo
+ */
+router.patch('/photos/:id/like', photo.likePhoto);
+
+/**
+ * Comment Photo
+ */
+router.patch('/photos/:id/comment', photo.commentPhoto);
 
 module.exports = router;
